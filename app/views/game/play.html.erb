@@ -1,0 +1,166 @@
+
+    <div class="container">
+        <div class="container-fluid">
+        <h1 id="heading">Let's Fire Crackers</h1>
+        <h2 id="strategy"></h2>
+        <big>Burn Crackers in the Game and NOT on the Roads!</big>
+        <p>Have a Pollution Free Diwali :D</p>
+       
+        <button id="restart">Restart</button>
+        </div>
+        
+        <div id="board">
+            <div class="box" id="0"></div>
+            <div class="box" id="1"></div>
+            <div class="box" id="2"></div>
+            <div class="box" id="3"></div>
+            <div class="box" id="4"></div>
+            <div class="box" id="5"></div>
+            <div class="box" id="6"></div>
+            <div class="box" id="7"></div>
+            <div class="box" id="8"></div>
+        </div>
+
+   
+    </div>
+<script>
+
+const boxes = document.querySelectorAll('.box');
+const text = document.querySelector('#heading');
+const strategy = document.querySelector('#strategy');
+const restartBtn = document.querySelector('#restart');
+
+const spaces = [];
+const tick_circle = 'Player 1';
+const tick_x = 'Player 2';
+let currentPlayer = tick_circle;
+const crackers= ['cracker.png','firecracker.png','redcracker.png','fireworks.png']
+const crackers2 = ['circle_cracker.png','firework2.png','fire_cracker2.png','bomb.png']
+let img_o =  crackers2[Math.floor(Math.random() * crackers2.length)];
+let img_x = crackers[Math.floor(Math.random() * crackers.length)];
+let img_curr = img_o;
+
+const drawBoard = () => {
+  boxes.forEach((box, i) => {
+    let styleString = '';
+    if (i < 3) {
+      styleString += 'border-bottom: 3px solid var(--text);';
+    }
+    if (i % 3 === 0) {
+      styleString += 'border-right: 3px solid var(--text);';
+    }
+    if (i % 3 === 2) {
+      styleString += 'border-left: 3px solid var(--text);';
+    }
+    if (i > 5) {
+      styleString += 'border-top: 3px solid var(--text);';
+    }
+    box.style = styleString;
+    box.addEventListener('click', boxClicked);
+  });
+};
+
+const boxClicked = (e) => {
+  const id = e.target.id;
+ 
+  console.log(e);
+  if (!spaces[id]) {
+    console.log(spaces[id]);
+    spaces[id] = currentPlayer;
+    //e.target.innerText = currentPlayer;
+    text.innerText = currentPlayer + "'s turn"
+    console.log(img_curr);
+    document.getElementById(id).innerHTML += "<img src=\"/assets/"+ img_curr +"\" width=\"100px\" height=\"100px\">";
+
+    if (playerWon()) {
+      text.innerText = `${currentPlayer} has won!`;
+      //restart();
+      return;
+    }
+
+    if (playerDraw()) {
+      return;
+    }
+    currentPlayer = currentPlayer === tick_circle ? tick_x : tick_circle;
+    img_curr = img_curr === img_o ? img_x : img_o;
+  }
+
+
+};
+
+
+const playerWon = () => {
+  if (spaces[0] === currentPlayer) {
+    if (spaces[1] === currentPlayer && spaces[2] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins up to top`;
+      return true;
+    }
+    if (spaces[3] === currentPlayer && spaces[6] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins on the left`;
+      return true;
+    }
+    if (spaces[4] === currentPlayer && spaces[8] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins diagonally`;
+      return true;
+    }
+  }
+  if (spaces[8] === currentPlayer) {
+    if (spaces[2] === currentPlayer && spaces[5] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins on the right`;
+      return true;
+    }
+    if (spaces[6] === currentPlayer && spaces[7] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins on the bottom`;
+      return true;
+    }
+  }
+  if (spaces[4] === currentPlayer) {
+    if (spaces[1] === currentPlayer && spaces[7] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins vertically on middle`;
+      return true;
+    }
+    if (spaces[3] === currentPlayer && spaces[5] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins horizontally on the middle`;
+      return true;
+    }
+    if (spaces[2] === currentPlayer && spaces[6] === currentPlayer) {
+      strategy.innerText = `${currentPlayer} wins diagonally`;
+      return true;
+    }
+  }
+};
+
+const playerDraw = () => {
+  let draw = 0;
+  spaces.forEach((space, i) => {
+    if (spaces[i] !== null) draw++;
+  });
+  console.log(draw);
+  if (draw == 9) {
+    text.innerText = 'Draw';
+    //restart();
+  }
+};
+
+const restart = () => {
+  setTimeout(() => {
+    spaces.forEach((space, i) => {
+      spaces[i] = null;
+    });
+    boxes.forEach((box) => {
+      box.innerText = '';
+    });
+    text.innerText = `Let's Fire Crackers`;
+    strategy.innerText = ``;
+  }, 1000);
+
+    img_o =  crackers2[Math.floor(Math.random() * crackers2.length)];
+    img_x = crackers[Math.floor(Math.random() * crackers.length)];
+    img_curr = img_o;
+};
+restartBtn.addEventListener('click', restart);
+//restart();
+drawBoard();
+
+</script>
+

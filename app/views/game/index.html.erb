@@ -1,0 +1,27 @@
+ <div class="container">
+       <div id="myIndex">
+        <h1 id="heading">Tic-Tac-Toe</h1>
+        <br/>
+        <h2 id="strategy">Welcome Players!</h2>
+        <br/>
+        <big>Player 1 Details</big>
+        <br/>
+        <%= form_with do |form|%>
+        <div class="form-group">
+            <%= form.label :playerOneName ,"Player 1" %>
+            <%= form.text_field :playerOneName %>
+        </div>
+        <br/>
+        <big>Player 2 Details</big>
+        <br/>
+        <div class="form-group">
+            <%= form.label :playerTwoName ,"Player 2" %>
+            <%= form.text_field :playerTwoName %>
+        </div>
+  <br/><br/>
+        <div class="actions" id="btnPlay">
+            <%= form.submit "Let's Play", class:"btn btn-primary" %>
+        </div>
+        <% end %>
+         </div>
+    </div>
